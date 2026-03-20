@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raymond Attic Conversion — Project Update</title>
+<style>
+  /* ── THEME ── */
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f7f6;
+    --bg3: #f0efed;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1a1a18;
+    --text2: #6b6b67;
+    --text3: #9b9b96;
+    --green-bg: #eaf3de;
+    --green-text: #3b6d11;
+    --amber-bg: #faeeda;
+    --amber-text: #854f0b;
+    --blue-bg: #e6f1fb;
+    --blue-text: #185fa5;
+    --gray-bg: #f0efed;
+    --gray-text: #6b6b67;
+    --red: #c0392b;
+    --success-bg: #eaf3de;
+    --success-text: #3b6d11;
+    --warn-bg: #faeeda;
+    --warn-text: #854f0b;
+    --info-bg: #e6f1fb;
+    --info-text: #185fa5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg2: #252523;
+      --bg3: #2e2e2b;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.15);
+      --text: #f0efed;
+      --text2: #a8a8a2;
+      --text3: #6b6b67;
+      --green-bg: #173404;
+      --green-text: #c0dd97;
+      --amber-bg: #412402;
+      --amber-text: #fac775;
+      --blue-bg: #042c53;
+      --blue-text: #b5d4f4;
+      --gray-bg: #2e2e2b;
+      --gray-text: #a8a8a2;
+      --red: #e87c72;
+      --success-bg: #173404;
+      --success-text: #c0dd97;
+      --warn-bg: #412402;
+      --warn-text: #fac775;
+      --info-bg: #042c53;
+      --info-text: #b5d4f4;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 0.5px solid var(--border2);
+  }
+  .biz {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+  .proj-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.01em;
+  }
+  .proj-addr {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+  .header-right { text-align: right; }
+  .status-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--info-bg);
+    color: var(--info-text);
+  }
+  .report-date {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 2.25rem; }
+  .sec-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: .75rem;
+  }
+
+  /* ── METRICS ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .metric {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: .85rem 1rem;
+  }
+  .metric-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .metric-value { font-size: 20px; font-weight: 600; color: var(--text); letter-spacing: -.01em; }
+
+  /* ── TIMELINE ── */
+  .tl-wrap {
+    border: 0.5px solid var(--border2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .wk-header {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    background: var(--bg2);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .wk-spacer {
+    border-right: 0.5px solid var(--border);
+    padding: .45rem 1rem;
+    font-size: 10px;
+    color: var(--text3);
+    font-weight: 500;
+  }
+  .wk-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: .45rem 1rem;
+  }
+  .wk-labels span { font-size: 10px; color: var(--text3); }
+
+  .phase-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .pinfo {
+    padding: .8rem 1rem;
+    border-right: 0.5px solid var(--border);
+  }
+  .pname { font-size: 13px; font-weight: 600; color: var(--text); }
+  .pdates { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .pstatus {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+  .s-complete { background: var(--success-bg); color: var(--success-text); }
+  .s-upcoming { background: var(--gray-bg); color: var(--gray-text); }
+
+  .bar-area {
+    padding: .9rem 1rem;
+    background: var(--bg);
+  }
+  .bar-track {
+    width: 100%;
+    height: 24px;
+    position: relative;
+  }
+  .bar {
+    height: 100%;
+    border-radius: 4px;
+    position: absolute;
+  }
+  .m-line {
+    position: absolute;
+    top: -8px;
+    bottom: -8px;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--red);
+    z-index: 5;
+  }
+  .m-dot {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    transform: translate(-50%, -50%);
+    z-index: 6;
+  }
+  .m-tip {
+    position: absolute;
+    top: -22px;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--red);
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .work-sub {
+    background: var(--bg2);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .work-sub:last-child { border-bottom: none; }
+  .work-sub-inner { display: grid; grid-template-columns: 160px 1fr; }
+  .wspacer { border-right: 0.5px solid var(--border); }
+  .witems { padding: .5rem 1rem .7rem; }
+  .witem {
+    font-size: 12px;
+    color: var(--text2);
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .wdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .insp-item {
+    font-size: 12px;
+    color: var(--text2);
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .insp-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+  }
+
+  /* ── MILESTONES ── */
+  .ms-wrap {
+    border: 0.5px solid var(--border2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .ms-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: .7rem 1rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .ms-item:last-child { border-bottom: none; }
+  .ms-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .ms-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .ms-date { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .ms-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .fnote { font-size: 11px; color: var(--text3); }
+
+  @media (max-width: 560px) {
+    .page { padding: 1.5rem 1rem 3rem; }
+    .metrics { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+    .metric-value { font-size: 16px; }
+    .wk-header, .phase-row, .work-sub-inner { grid-template-columns: 120px 1fr; }
+    .pinfo { padding: .65rem .75rem; }
+    .pname { font-size: 12px; }
+    .header { flex-direction: column; gap: .75rem; }
+    .header-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="biz">Raymond Construction</div>
+      <div class="proj-name">Attic Conversion — Raymond Residence</div>
+      <div class="proj-addr">Oconee County, Georgia</div>
+    </div>
+    <div class="header-right">
+      <span class="status-badge">Active</span>
+      <div class="report-date">Update — March 20, 2026</div>
+    </div>
+  </div>
+
+  <!-- BUDGET SUMMARY -->
+  <div class="section">
+    <div class="sec-label">Budget Summary</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Projected Cost</div>
+        <div class="metric-value">$22,145</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Paid to Date</div>
+        <div class="metric-value">$2,900</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Remaining</div>
+        <div class="metric-value">$19,245</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <div class="sec-label">Project Timeline</div>
+    <div class="tl-wrap">
+
+      <div class="wk-header">
+        <div class="wk-spacer">Phase</div>
+        <div class="wk-labels">
+          <span>Oct '25</span><span>Jan '26</span><span>Mar</span><span>Apr</span><span>May</span>
+        </div>
+      </div>
+
+      <!-- Planning & Permits -->
+      <div class="phase-row">
+        <div class="pinfo">
+          <div class="pname">Planning & Permits</div>
+          <div class="pdates">Oct 2025 — Jan 2026</div>
+          <span class="pstatus s-complete">Complete</span>
+        </div>
+        <div class="bar-area">
+          <div class="bar-track">
+            <div class="bar" style="left:0%;width:28%;background:var(--success-bg);border:0.5px solid var(--green-text);opacity:.85;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="work-sub">
+        <div class="work-sub-inner">
+          <div class="wspacer"></div>
+          <div class="witems">
+            <div class="witem"><div class="wdot" style="background:var(--green-text);"></div>Permitting & approvals</div>
+            <div class="witem"><div class="wdot" style="background:var(--green-text);"></div>Trade estimates & planning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo & Rough-In -->
+      <div class="phase-row">
+        <div class="pinfo">
+          <div class="pname">Demo & Rough-In</div>
+          <div class="pdates">Mar 2 — Mar 16, 2026</div>
+          <span class="pstatus s-complete">Complete</span>
+        </div>
+        <div class="bar-area">
+          <div class="bar-track">
+            <div class="bar" style="left:30%;width:13%;background:var(--success-bg);border:0.5px solid var(--green-text);opacity:.85;"></div>
+            <div class="m-line" style="left:44%;"></div>
+            <div class="m-dot" style="left:44%;"></div>
+            <div class="m-tip" style="left:44%;">Rough insp. 3/23</div>
+          </div>
+        </div>
+      </div>
+      <div class="work-sub">
+        <div class="work-sub-inner">
+          <div class="wspacer"></div>
+          <div class="witems">
+            <div class="witem"><div class="wdot" style="background:var(--green-text);"></div>Framing — Lucy room & master closet</div>
+            <div class="witem"><div class="wdot" style="background:var(--green-text);"></div>Plumbing, HVAC & electrical rough-in</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insulation & Drywall -->
+      <div class="phase-row">
+        <div class="pinfo">
+          <div class="pname">Insulation & Drywall</div>
+          <div class="pdates">Apr 6 — Apr 18, 2026</div>
+          <span class="pstatus s-upcoming">Upcoming</span>
+        </div>
+        <div class="bar-area">
+          <div class="bar-track">
+            <div class="bar" style="left:48%;width:14%;background:var(--warn-bg);border:0.5px solid var(--amber-text);opacity:.85;"></div>
+            <div class="m-line" style="left:54%;"></div>
+            <div class="m-dot" style="left:54%;"></div>
+            <div class="m-tip" style="left:54%;">Insul. insp. ~4/9</div>
+          </div>
+        </div>
+      </div>
+      <div class="work-sub">
+        <div class="work-sub-inner">
+          <div class="wspacer"></div>
+          <div class="witems">
+            <div class="witem"><div class="wdot" style="background:var(--amber-text);"></div>Insulation install — Apr 6</div>
+            <div class="insp-item"><div class="insp-dot"></div>Insulation inspection — week of Apr 6</div>
+            <div class="witem"><div class="wdot" style="background:var(--amber-text);"></div>Drywall hang & finish — week of Apr 13</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Finish Work -->
+      <div class="phase-row" style="border-bottom:none;">
+        <div class="pinfo">
+          <div class="pname">Finish Work</div>
+          <div class="pdates">Apr 21 — May 11, 2026</div>
+          <span class="pstatus s-upcoming">Upcoming</span>
+        </div>
+        <div class="bar-area">
+          <div class="bar-track">
+            <div class="bar" style="left:63%;width:22%;background:var(--info-bg);border:0.5px solid var(--blue-text);opacity:.85;"></div>
+            <div class="m-line" style="left:85%;"></div>
+            <div class="m-dot" style="left:85%;"></div>
+            <div class="m-tip" style="left:85%;">Final insp. & CO</div>
+          </div>
+        </div>
+      </div>
+      <div class="work-sub" style="border-bottom:none;">
+        <div class="work-sub-inner">
+          <div class="wspacer"></div>
+          <div class="witems">
+            <div class="witem"><div class="wdot" style="background:var(--blue-text);"></div>Trim & built-ins</div>
+            <div class="witem"><div class="wdot" style="background:var(--blue-text);"></div>Paint</div>
+            <div class="witem"><div class="wdot" style="background:var(--blue-text);"></div>Carpet</div>
+            <div class="witem"><div class="wdot" style="background:var(--blue-text);"></div>Electrical final</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MILESTONES -->
+  <div class="section">
+    <div class="sec-label">Key Milestones & Inspections</div>
+    <div class="ms-wrap">
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--success-bg);color:var(--success-text);">✓</div>
+        <div>
+          <div class="ms-name">Planning complete</div>
+          <div class="ms-date">January 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--success-bg);color:var(--success-text);">Complete</span>
+      </div>
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--success-bg);color:var(--success-text);">✓</div>
+        <div>
+          <div class="ms-name">Demo & rough-in complete</div>
+          <div class="ms-date">March 16, 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--success-bg);color:var(--success-text);">Complete</span>
+      </div>
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--warn-bg);color:var(--warn-text);">→</div>
+        <div>
+          <div class="ms-name">Rough inspection</div>
+          <div class="ms-date">Week of March 23, 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--warn-bg);color:var(--warn-text);">Next up</span>
+      </div>
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--gray-bg);color:var(--gray-text);">→</div>
+        <div>
+          <div class="ms-name">Insulation install</div>
+          <div class="ms-date">April 6, 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--gray-bg);color:var(--gray-text);">Scheduled</span>
+      </div>
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--gray-bg);color:var(--gray-text);">→</div>
+        <div>
+          <div class="ms-name">Insulation inspection</div>
+          <div class="ms-date">Week of April 6, 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--gray-bg);color:var(--gray-text);">Planned</span>
+      </div>
+      <div class="ms-item">
+        <div class="ms-icon" style="background:var(--gray-bg);color:var(--gray-text);">→</div>
+        <div>
+          <div class="ms-name">Final inspection & certificate of occupancy</div>
+          <div class="ms-date">Week of May 11, 2026</div>
+        </div>
+        <span class="ms-badge" style="background:var(--gray-bg);color:var(--gray-text);">Planned</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="fnote">Questions? Contact your project manager directly.</div>
+    <div class="fnote">Raymond Attic Conversion — Confidential</div>
+  </div>
+
+</div>
+</body>
+</html>
