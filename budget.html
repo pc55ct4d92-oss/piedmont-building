@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget — Raymond Attic Conversion</title>
+<style>
+  :root {
+    --bg:#ffffff;--bg2:#f7f7f6;--bg3:#f0efed;
+    --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+    --text:#1a1a18;--text2:#6b6b67;--text3:#9b9b96;
+    --info-bg:#e6f1fb;--info-text:#185fa5;
+    --green-bg:#eaf3de;--green-text:#3b6d11;
+    --amber-bg:#faeeda;--amber-text:#854f0b;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --bg:#1c1c1a;--bg2:#252523;--bg3:#2e2e2b;
+      --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
+      --text:#f0efed;--text2:#a8a8a2;--text3:#6b6b67;
+      --info-bg:#042c53;--info-text:#b5d4f4;
+      --green-bg:#173404;--green-text:#c0dd97;
+      --amber-bg:#412402;--amber-text:#fac775;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+  .page{max-width:760px;margin:0 auto;padding:2.5rem 2rem 4rem;}
+
+  nav{display:flex;align-items:center;gap:1.5rem;padding-bottom:1.5rem;margin-bottom:1.75rem;border-bottom:0.5px solid var(--border2);}
+  .nav-brand{font-size:13px;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:-.01em;}
+  .nav-links{display:flex;gap:1.25rem;margin-left:auto;}
+  .nav-links a{font-size:13px;color:var(--text2);text-decoration:none;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);font-weight:600;}
+
+  .header{margin-bottom:1.75rem;}
+  .biz{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+  .proj-name{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.01em;}
+  .proj-sub{font-size:13px;color:var(--text2);margin-top:3px;}
+
+  .sec-label{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem;}
+  .section{margin-bottom:2.25rem;}
+
+  /* summary metrics */
+  .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:2.25rem;}
+  .metric{background:var(--bg2);border-radius:10px;padding:.85rem 1rem;}
+  .metric-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .metric-value{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em;}
+
+  /* progress bar */
+  .progress-wrap{margin-bottom:2.25rem;}
+  .progress-labels{display:flex;justify-content:space-between;margin-bottom:.4rem;}
+  .progress-label{font-size:11px;color:var(--text2);}
+  .progress-track{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:4px;background:var(--green-text);transition:width .3s;}
+
+  /* budget tables */
+  .budget-group{margin-bottom:1.5rem;}
+  .group-header{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:0.5px solid var(--border2);margin-bottom:.25rem;}
+  .group-name{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);}
+  .group-subtotal{font-size:12px;font-weight:600;color:var(--text);}
+
+  .budget-table{width:100%;border-collapse:collapse;}
+  .budget-table th{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:.5rem .75rem;text-align:left;background:var(--bg2);border-bottom:0.5px solid var(--border);}
+  .budget-table th:not(:first-child){text-align:right;}
+  .budget-table td{font-size:13px;color:var(--text2);padding:.55rem .75rem;border-bottom:0.5px solid var(--border);vertical-align:middle;}
+  .budget-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;}
+  .budget-table tr:last-child td{border-bottom:none;}
+  .budget-table tr:hover td{background:var(--bg2);}
+  .item-name{color:var(--text);font-weight:500;}
+  .paid-val{color:var(--green-text);font-weight:500;}
+  .complete-badge{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px;background:var(--green-bg);color:var(--green-text);margin-left:6px;vertical-align:middle;}
+  .subtotal-row td{font-weight:600;color:var(--text);background:var(--bg2);font-size:13px;border-top:0.5px solid var(--border2);}
+
+  /* invoice log */
+  .invoice-wrap{border:.5px solid var(--border2);border-radius:12px;overflow:hidden;}
+  .invoice-header{display:grid;grid-template-columns:80px 1fr 1fr 90px 80px;gap:8px;padding:.5rem 1rem;background:var(--bg2);border-bottom:0.5px solid var(--border);}
+  .invoice-header span{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);}
+  .invoice-header span:last-child{text-align:right;}
+  .invoice-row{display:grid;grid-template-columns:80px 1fr 1fr 90px 80px;gap:8px;padding:.6rem 1rem;border-bottom:0.5px solid var(--border);align-items:center;}
+  .invoice-row:last-child{border-bottom:none;}
+  .invoice-row:hover{background:var(--bg2);}
+  .inv-date{font-size:12px;color:var(--text3);}
+  .inv-vendor{font-size:13px;font-weight:500;color:var(--text);}
+  .inv-work{font-size:12px;color:var(--text2);}
+  .inv-method{font-size:11px;color:var(--text3);}
+  .inv-amount{font-size:13px;font-weight:600;color:var(--text);text-align:right;font-variant-numeric:tabular-nums;}
+  .inv-total-row{display:flex;justify-content:space-between;align-items:center;padding:.65rem 1rem;background:var(--bg2);border-top:0.5px solid var(--border2);}
+  .inv-total-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);}
+  .inv-total-val{font-size:15px;font-weight:600;color:var(--text);}
+
+  .footer{margin-top:2.5rem;padding-top:1rem;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;}
+  .fnote{font-size:11px;color:var(--text3);}
+
+  @media(max-width:560px){
+    .page{padding:1.5rem 1rem 3rem;}
+    .metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+    .metric-value{font-size:16px;}
+    .invoice-header{grid-template-columns:70px 1fr 80px;}
+    .invoice-row{grid-template-columns:70px 1fr 80px;}
+    .inv-work,.inv-method{display:none;}
+    nav{flex-wrap:wrap;gap:.75rem;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav>
+    <a class="nav-brand" href="raymond_attic_project_update.html">Raymond Attic Conversion</a>
+    <div class="nav-links">
+      <a href="raymond_attic_project_update.html">Project Update</a>
+      <a href="budget.html" class="active">Budget</a>
+      <a href="photos.html">Photos</a>
+      <a href="team.html">Our Team</a>
+    </div>
+  </nav>
+
+  <div class="header">
+    <div class="biz">Raymond Construction</div>
+    <div class="proj-name">Budget & Invoices</div>
+    <div class="proj-sub">Attic Conversion — Raymond Residence · Updated March 20, 2026</div>
+  </div>
+
+  <!-- SUMMARY METRICS -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Projected Cost</div>
+      <div class="metric-value">$23,970</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Paid to Date</div>
+      <div class="metric-value">$2,077</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Remaining</div>
+      <div class="metric-value">$21,893</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span class="progress-label">$2,077 paid</span>
+      <span class="progress-label">9% complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width:9%;"></div>
+    </div>
+  </div>
+
+  <!-- BUDGET BREAKDOWN -->
+  <div class="section">
+    <div class="sec-label">Budget Breakdown</div>
+
+    <!-- Planned Work -->
+    <div class="budget-group">
+      <div class="group-header">
+        <span class="group-name">Planned Work</span>
+        <span class="group-subtotal">$20,145 projected</span>
+      </div>
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Projected</th>
+            <th>Paid</th>
+            <th>Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="item-name">Dumpsters & Potty</span></td>
+            <td>$700</td>
+            <td class="paid-val">$605</td>
+            <td>$95</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Plumbing Labor</span><span class="complete-badge">Done</span></td>
+            <td>$800</td>
+            <td class="paid-val">$295</td>
+            <td>$505</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">HVAC</span><span class="complete-badge">Done</span></td>
+            <td>$820</td>
+            <td class="paid-val">$820</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Electrical</span></td>
+            <td>$1,200</td>
+            <td class="paid-val">—</td>
+            <td>$1,200</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Framing</span></td>
+            <td>$3,500</td>
+            <td class="paid-val">—</td>
+            <td>$3,500</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Drywall</span></td>
+            <td>$3,500</td>
+            <td class="paid-val">—</td>
+            <td>$3,500</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Painting</span></td>
+            <td>$1,750</td>
+            <td class="paid-val">—</td>
+            <td>$1,750</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Trim & Built-Ins</span></td>
+            <td>$3,075</td>
+            <td class="paid-val">—</td>
+            <td>$3,075</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Carpet</span></td>
+            <td>$3,000</td>
+            <td class="paid-val">—</td>
+            <td>$3,000</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Insulation</span></td>
+            <td>$1,000</td>
+            <td class="paid-val">—</td>
+            <td>$1,000</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Miscellaneous</span></td>
+            <td>$800</td>
+            <td class="paid-val">$272</td>
+            <td>$528</td>
+          </tr>
+          <tr class="subtotal-row">
+            <td>Subtotal</td>
+            <td>$20,145</td>
+            <td>$1,992</td>
+            <td>$18,153</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Added Work -->
+    <div class="budget-group">
+      <div class="group-header">
+        <span class="group-name">Added Work</span>
+        <span class="group-subtotal">$1,675 projected</span>
+      </div>
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Projected</th>
+            <th>Paid</th>
+            <th>Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="item-name">Insulation — Existing Attic</span></td>
+            <td>$1,675</td>
+            <td class="paid-val">—</td>
+            <td>$1,675</td>
+          </tr>
+          <tr class="subtotal-row">
+            <td>Subtotal</td>
+            <td>$1,675</td>
+            <td>—</td>
+            <td>$1,675</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Fees -->
+    <div class="budget-group">
+      <div class="group-header">
+        <span class="group-name">Fees</span>
+        <span class="group-subtotal">$2,150 projected</span>
+      </div>
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Projected</th>
+            <th>Paid</th>
+            <th>Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="item-name">Permits</span></td>
+            <td>$150</td>
+            <td class="paid-val">$85</td>
+            <td>$65</td>
+          </tr>
+          <tr>
+            <td><span class="item-name">Contractor Flat Fee</span></td>
+            <td>$2,000</td>
+            <td class="paid-val">—</td>
+            <td>$2,000</td>
+          </tr>
+          <tr class="subtotal-row">
+            <td>Subtotal</td>
+            <td>$2,150</td>
+            <td>$85</td>
+            <td>$2,065</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- INVOICE LOG -->
+  <div class="section">
+    <div class="sec-label">Invoice Log</div>
+    <div class="invoice-wrap">
+      <div class="invoice-header">
+        <span>Date</span>
+        <span>Vendor</span>
+        <span>Work</span>
+        <span>Method</span>
+        <span style="text-align:right;">Amount</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Jan 16</span>
+        <span class="inv-vendor">Oconee County</span>
+        <span class="inv-work">Permits</span>
+        <span class="inv-method">Wells Card</span>
+        <span class="inv-amount">$85.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Mar 9</span>
+        <span class="inv-vendor">McCart</span>
+        <span class="inv-work">Plumbing Labor</span>
+        <span class="inv-method">Check</span>
+        <span class="inv-amount">$295.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Mar 9</span>
+        <span class="inv-vendor">Rolloff</span>
+        <span class="inv-work">Dumpsters & Potty</span>
+        <span class="inv-method">Wells Card</span>
+        <span class="inv-amount">$605.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Mar 18</span>
+        <span class="inv-vendor">McCart</span>
+        <span class="inv-work">Miscellaneous</span>
+        <span class="inv-method">Check</span>
+        <span class="inv-amount">$272.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Mar 19</span>
+        <span class="inv-vendor">Hale's</span>
+        <span class="inv-work">HVAC</span>
+        <span class="inv-method">Check</span>
+        <span class="inv-amount">$820.00</span>
+      </div>
+      <div class="inv-total-row">
+        <span class="inv-total-label">Total Paid</span>
+        <span class="inv-total-val">$2,077.00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="fnote">Updated March 20, 2026</div>
+    <div class="fnote">Raymond Attic Conversion — Confidential</div>
+  </div>
+
+</div>
+</body>
+</html>
