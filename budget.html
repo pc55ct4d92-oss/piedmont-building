@@ -98,11 +98,18 @@
   @media(max-width:560px){
     .page{padding:1.5rem 1rem 3rem;}
     .metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
-    .metric-value{font-size:16px;}
-    .invoice-header{grid-template-columns:70px 1fr 80px;}
-    .invoice-row{grid-template-columns:70px 1fr 80px;}
-    .inv-work,.inv-method{display:none;}
+    .metric-value{font-size:15px;}
+    .invoice-header{grid-template-columns:52px 1fr 1fr 68px;gap:6px;}
+    .invoice-row{grid-template-columns:52px 1fr 1fr 68px;gap:6px;}
+    .inv-method{display:none;}
+    .invoice-header span:nth-child(4){display:none;}
     nav{flex-wrap:wrap;gap:.75rem;}
+    .nav-links{margin-left:0;gap:.75rem;}
+    .budget-table th:nth-child(2),.budget-table th:nth-child(3),.budget-table th:nth-child(4){width:65px;}
+    .budget-table th{padding:.35rem .4rem;letter-spacing:0;font-size:9px;}
+    .budget-table td{font-size:11px;padding:.45rem .4rem;}
+    .group-header{flex-wrap:wrap;gap:.2rem;}
+    .footer{flex-direction:column;gap:.35rem;}
     .fnote-full{display:none;}
     .fnote-short{display:inline;}
   }
