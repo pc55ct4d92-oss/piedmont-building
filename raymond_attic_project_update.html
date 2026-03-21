@@ -315,6 +315,7 @@
     align-items: center;
   }
   .fnote { font-size: 11px; color: var(--text3); }
+  .fnote-short { display: none; }
 
   @media (max-width: 560px) {
     .page { padding: 1.5rem 1rem 3rem; }
@@ -325,6 +326,8 @@
     .pname { font-size: 12px; }
     .header { flex-direction: column; gap: .75rem; }
     .header-right { text-align: left; }
+    .fnote-full { display: none; }
+    .fnote-short { display: inline; }
   }
 
   nav{display:flex;align-items:center;gap:1.5rem;padding-bottom:1.5rem;margin-bottom:1.75rem;border-bottom:0.5px solid var(--border2);}
@@ -356,8 +359,7 @@
       <div class="proj-addr">Oconee County, Georgia</div>
     </div>
     <div class="header-right">
-      <span class="status-badge">Active</span>
-      <div class="report-date">Update — March 20, 2026</div>
+<div class="report-date">Update — March 20, 2026</div>
     </div>
   </div>
 
@@ -367,15 +369,15 @@
     <div class="metrics">
       <div class="metric">
         <div class="metric-label">Projected Cost</div>
-        <div class="metric-value">$22,145</div>
+        <div class="metric-value">$23,970</div>
       </div>
       <div class="metric">
         <div class="metric-label">Paid to Date</div>
-        <div class="metric-value">$2,900</div>
+        <div class="metric-value">$2,077</div>
       </div>
       <div class="metric">
         <div class="metric-label">Remaining</div>
-        <div class="metric-value">$19,245</div>
+        <div class="metric-value">$21,388</div>
       </div>
     </div>
   </div>
@@ -451,9 +453,9 @@
         <div class="bar-area">
           <div class="bar-track">
             <div class="bar" style="left:48%;width:14%;background:var(--warn-bg);border:0.5px solid var(--amber-text);opacity:.85;"></div>
-            <div class="m-line" style="left:57%;"></div>
-            <div class="m-dot" style="left:57%;"></div>
-            <div class="m-tip" style="left:57%;">Insul. insp. ~4/13</div>
+            <div class="m-line" style="left:54%;"></div>
+            <div class="m-dot" style="left:54%;"></div>
+            <div class="m-tip" style="left:54%;">Insul. insp. ~4/9</div>
           </div>
         </div>
       </div>
@@ -556,8 +558,8 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="fnote">Questions? Contact your project manager directly.</div>
-    <div class="fnote">Raymond Attic Conversion — Confidential</div>
+    <div class="fnote">(706) 555-0100</div>
+    <div class="fnote"><span class="fnote-full">© 2026 Raymond Construction · Licensed & Insured · Oconee County, GA</span><span class="fnote-short">© 2026 Raymond Construction</span></div>
   </div>
 
 </div>

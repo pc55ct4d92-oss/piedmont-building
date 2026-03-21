@@ -61,10 +61,13 @@
   .ci-dot{width:6px;height:6px;border-radius:50%;background:var(--green-text);flex-shrink:0;margin-top:.4rem;}
   .footer{margin-top:2.5rem;padding-top:1rem;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;}
   .fnote{font-size:11px;color:var(--text3);}
+  .fnote-short{display:none;}
   @media(max-width:560px){
     .page{padding:1.5rem 1rem 3rem;}
     .stats{grid-template-columns:repeat(3,minmax(0,1fr));}
     .profile-top{flex-direction:column;align-items:flex-start;gap:.75rem;}
+    .fnote-full{display:none;}
+    .fnote-short{display:inline;}
   }
 </style>
 </head>
@@ -117,10 +120,10 @@
 
       <div class="specialties-label">Specialties</div>
       <div class="tags">
-        <span class="tag">Attic conversions</span>
-        <span class="tag">Custom closets & built-ins</span>
-        <span class="tag">Framing</span>
-        <span class="tag">Finish carpentry</span>
+        <span class="tag">Kitchen Remodel</span>
+        <span class="tag">Home Additions</span>
+        <span class="tag">Bathroom Remodel</span>
+        <span class="tag">Custom Homes</span>
         <span class="tag">High-end remodels</span>
         <span class="tag">Oconee County</span>
       </div>
@@ -144,4 +147,10 @@
   </div>
 
   <div class="footer">
-    <div class="fnote">Questions? Reach o
+    <div class="fnote">(706) 555-0100</div>
+    <div class="fnote"><span class="fnote-full">© 2026 Raymond Construction · Licensed & Insured · Oconee County, GA</span><span class="fnote-short">© 2026 Raymond Construction</span></div>
+  </div>
+
+</div>
+</body>
+</html>

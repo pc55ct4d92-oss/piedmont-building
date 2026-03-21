@@ -61,8 +61,9 @@
   .group-name{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);}
   .group-subtotal{font-size:12px;font-weight:600;color:var(--text);}
 
-  .budget-table{width:100%;border-collapse:collapse;}
+  .budget-table{width:100%;border-collapse:collapse;table-layout:fixed;}
   .budget-table th{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:.5rem .75rem;text-align:left;background:var(--bg2);border-bottom:0.5px solid var(--border);}
+  .budget-table th:nth-child(2),.budget-table th:nth-child(3),.budget-table th:nth-child(4){width:90px;}
   .budget-table th:not(:first-child){text-align:right;}
   .budget-table td{font-size:13px;color:var(--text2);padding:.55rem .75rem;border-bottom:0.5px solid var(--border);vertical-align:middle;}
   .budget-table td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;}
@@ -92,6 +93,7 @@
 
   .footer{margin-top:2.5rem;padding-top:1rem;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;}
   .fnote{font-size:11px;color:var(--text3);}
+  .fnote-short{display:none;}
 
   @media(max-width:560px){
     .page{padding:1.5rem 1rem 3rem;}
@@ -101,6 +103,8 @@
     .invoice-row{grid-template-columns:70px 1fr 80px;}
     .inv-work,.inv-method{display:none;}
     nav{flex-wrap:wrap;gap:.75rem;}
+    .fnote-full{display:none;}
+    .fnote-short{display:inline;}
   }
 </style>
 </head>
@@ -330,25 +334,11 @@
         <span style="text-align:right;">Amount</span>
       </div>
       <div class="invoice-row">
-        <span class="inv-date">Jan 16</span>
-        <span class="inv-vendor">Oconee County</span>
-        <span class="inv-work">Permits</span>
-        <span class="inv-method">Wells Card</span>
-        <span class="inv-amount">$85.00</span>
-      </div>
-      <div class="invoice-row">
-        <span class="inv-date">Mar 9</span>
-        <span class="inv-vendor">McCart</span>
-        <span class="inv-work">Plumbing Labor</span>
+        <span class="inv-date">Mar 19</span>
+        <span class="inv-vendor">Hale's</span>
+        <span class="inv-work">HVAC</span>
         <span class="inv-method">Check</span>
-        <span class="inv-amount">$295.00</span>
-      </div>
-      <div class="invoice-row">
-        <span class="inv-date">Mar 9</span>
-        <span class="inv-vendor">Rolloff</span>
-        <span class="inv-work">Dumpsters & Potty</span>
-        <span class="inv-method">Wells Card</span>
-        <span class="inv-amount">$605.00</span>
+        <span class="inv-amount">$820.00</span>
       </div>
       <div class="invoice-row">
         <span class="inv-date">Mar 18</span>
@@ -358,11 +348,25 @@
         <span class="inv-amount">$272.00</span>
       </div>
       <div class="invoice-row">
-        <span class="inv-date">Mar 19</span>
-        <span class="inv-vendor">Hale's</span>
-        <span class="inv-work">HVAC</span>
+        <span class="inv-date">Mar 9</span>
+        <span class="inv-vendor">Rolloff</span>
+        <span class="inv-work">Dumpsters & Potty</span>
+        <span class="inv-method">Wells Card</span>
+        <span class="inv-amount">$605.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Mar 9</span>
+        <span class="inv-vendor">McCart</span>
+        <span class="inv-work">Plumbing Labor</span>
         <span class="inv-method">Check</span>
-        <span class="inv-amount">$820.00</span>
+        <span class="inv-amount">$295.00</span>
+      </div>
+      <div class="invoice-row">
+        <span class="inv-date">Jan 16</span>
+        <span class="inv-vendor">Oconee County</span>
+        <span class="inv-work">Permits</span>
+        <span class="inv-method">Wells Card</span>
+        <span class="inv-amount">$85.00</span>
       </div>
       <div class="inv-total-row">
         <span class="inv-total-label">Total Paid</span>
@@ -372,8 +376,8 @@
   </div>
 
   <div class="footer">
-    <div class="fnote">Updated March 20, 2026</div>
-    <div class="fnote">Raymond Attic Conversion — Confidential</div>
+    <div class="fnote">(706) 555-0100</div>
+    <div class="fnote"><span class="fnote-full">© 2026 Raymond Construction · Licensed & Insured · Oconee County, GA</span><span class="fnote-short">© 2026 Raymond Construction</span></div>
   </div>
 
 </div>
