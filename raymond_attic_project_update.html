@@ -81,9 +81,9 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0;
     margin-bottom: 1.75rem;
-    border-bottom: 0.5px solid var(--border2);
+    border-bottom: none;
   }
   .biz {
     font-size: 10px;
@@ -326,10 +326,26 @@
     .header { flex-direction: column; gap: .75rem; }
     .header-right { text-align: left; }
   }
+
+  nav{display:flex;align-items:center;gap:1.5rem;padding-bottom:1.5rem;margin-bottom:1.75rem;border-bottom:0.5px solid var(--border2);}
+  .nav-brand{font-size:13px;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:-.01em;}
+  .nav-links{display:flex;gap:1.25rem;margin-left:auto;}
+  .nav-links a{font-size:13px;color:var(--text2);text-decoration:none;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);font-weight:600;}
 </style>
 </head>
 <body>
 <div class="page">
+
+  <nav>
+    <a class="nav-brand" href="raymond_attic_project_update.html">Raymond Attic Conversion</a>
+    <div class="nav-links">
+      <a href="raymond_attic_project_update.html" class="active">Project Update</a>
+      <a href="photos.html">Photos</a>
+      <a href="team.html">Your Team</a>
+    </div>
+  </nav>
 
   <!-- HEADER -->
   <div class="header">
@@ -434,9 +450,9 @@
         <div class="bar-area">
           <div class="bar-track">
             <div class="bar" style="left:48%;width:14%;background:var(--warn-bg);border:0.5px solid var(--amber-text);opacity:.85;"></div>
-            <div class="m-line" style="left:54%;"></div>
-            <div class="m-dot" style="left:54%;"></div>
-            <div class="m-tip" style="left:54%;">Insul. insp. ~4/9</div>
+            <div class="m-line" style="left:57%;"></div>
+            <div class="m-dot" style="left:57%;"></div>
+            <div class="m-tip" style="left:57%;">Insul. insp. ~4/13</div>
           </div>
         </div>
       </div>
