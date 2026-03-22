@@ -104,6 +104,12 @@
     color: var(--text2);
     margin-top: 3px;
   }
+  .weather-line {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    display: none;
+  }
   .header-right { text-align: right; }
   .status-badge {
     display: inline-block;
@@ -360,6 +366,7 @@
       <div class="biz">Raymond Construction</div>
       <div class="proj-name">Attic Conversion — Raymond Residence</div>
       <div class="proj-addr">Oconee County, Georgia</div>
+      <div class="weather-line" id="weather-line"></div>
     </div>
     <div class="header-right">
 <div class="report-date">Update — March 20, 2026</div>
@@ -566,5 +573,32 @@
   </div>
 
 </div>
+
+<script>
+(function () {
+  var codes = {
+    0: 'clear', 1: 'mostly clear', 2: 'partly cloudy', 3: 'overcast',
+    45: 'foggy', 48: 'foggy',
+    51: 'light drizzle', 53: 'drizzle', 55: 'heavy drizzle',
+    61: 'light rain', 63: 'rain', 65: 'heavy rain',
+    71: 'light snow', 73: 'snow', 75: 'heavy snow', 77: 'snow',
+    80: 'light showers', 81: 'showers', 82: 'heavy showers',
+    85: 'snow showers', 86: 'heavy snow showers',
+    95: 'thunderstorms', 96: 'thunderstorms', 99: 'thunderstorms'
+  };
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=33.85569&longitude=-83.52158&current=temperature_2m,weathercode,windspeed_10m&temperature_unit=fahrenheit&windspeed_unit=mph')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var c = d.current;
+      var condition = codes[c.weathercode] || 'unknown';
+      var temp = Math.round(c.temperature_2m);
+      var wind = Math.round(c.windspeed_10m);
+      var el = document.getElementById('weather-line');
+      el.textContent = 'Job site \u2014 ' + temp + '\u00b0F \u00b7 ' + condition + ' \u00b7 ' + wind + ' mph winds';
+      el.style.display = 'block';
+    })
+    .catch(function () {});
+}());
+</script>
 </body>
 </html>
