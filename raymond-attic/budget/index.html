@@ -35,7 +35,9 @@
   .nav-links a:hover{color:var(--text);}
   .nav-links a.active{color:var(--text);font-weight:600;}
 
-  .header{margin-bottom:1.75rem;}
+  .header{margin-bottom:1.75rem;display:flex;justify-content:space-between;align-items:flex-start;}
+  .header-right{text-align:right;}
+  .report-date{font-size:11px;color:var(--text3);margin-top:6px;}
   .biz{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
   .proj-name{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.01em;}
   .proj-sub{font-size:13px;color:var(--text2);margin-top:3px;}
@@ -104,6 +106,8 @@
     .invoice-row{grid-template-columns:52px 1fr 1fr 68px;gap:6px;}
     .inv-method{display:none;}
     .invoice-header span:nth-child(4){display:none;}
+    .header{flex-direction:column;gap:.75rem;}
+    .header-right{text-align:left;}
     nav{flex-wrap:wrap;}
     .budget-table th:nth-child(2),.budget-table th:nth-child(3),.budget-table th:nth-child(4){width:65px;}
     .budget-table th{padding:.35rem .4rem;letter-spacing:0;font-size:9px;}
@@ -129,9 +133,14 @@
   </nav>
 
   <div class="header">
-    <div class="biz">Piedmont Building Company</div>
-    <div class="proj-name">Budget & Invoices</div>
-    <div class="proj-sub">Attic Conversion — Raymond Residence · Updated March 27, 2026</div>
+    <div>
+      <div class="biz">Piedmont Building Company</div>
+      <div class="proj-name">Budget & Invoices</div>
+      <div class="proj-sub">Attic Conversion — Raymond Residence</div>
+    </div>
+    <div class="header-right">
+      <div class="report-date">Update — March 27, 2026</div>
+    </div>
   </div>
 
   <!-- SUMMARY METRICS -->
